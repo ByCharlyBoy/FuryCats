@@ -15,7 +15,7 @@ public:
     Pong();
     ~Pong();
     void Start();
-    void Update();
+    void Update(float deltaTime);
     void reset_ball();
     void change_ball_direction(Ball_Direction d);
     void randomized_ball_direction();

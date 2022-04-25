@@ -11,7 +11,7 @@ public:
     Scene1();
     ~Scene1();
     void Start();
-    void Update();
+    void Update(float deltaTime);
     void OnEnd();
     GameObject* juanpi;
     GameObject* juanpi2;

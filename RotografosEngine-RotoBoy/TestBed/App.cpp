@@ -104,8 +104,8 @@ void App::Update()
 		return;
 	if (!_currentScene->hasStarted)
 		_currentScene->Start();
-	World::Update(std::chrono::duration_cast<std::chrono::seconds> (std::chrono::system_clock::now() - _lastTime).count()); 
-	_currentScene->Update();
+	World::Update((float)std::chrono::duration_cast<std::chrono::microseconds> (std::chrono::system_clock::now() - _lastTime).count()/40000.0f); 
+	_currentScene->Update((float)std::chrono::duration_cast<std::chrono::microseconds> (std::chrono::system_clock::now() - _lastTime).count() / 40000.0f);
 	SDL_UpdateWindowSurface(_surfDisplay);
 	SDL_Delay(16);
 	InputManager::UpdateStates(); 

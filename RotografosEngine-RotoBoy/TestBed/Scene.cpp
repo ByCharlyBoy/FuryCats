@@ -14,8 +14,9 @@ void Scene::Start()
 	hasStarted = true;
 }
 
-void Scene::Update()
+void Scene::Update(float deltaTime)
 {
+
 }
 
 void Scene::OnEnd()

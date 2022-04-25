@@ -34,9 +34,9 @@ void Pong::Start()
     speedy = 5;
 }
 
-void Pong::Update()
+void Pong::Update(float deltaTime)
 {
-    Scene::Update();
+    Scene::Update(deltaTime);
     move_ball(); 
     
     if (ball->GetPos()->x >= App::GetWidth() - ball->GetPos()->w || 

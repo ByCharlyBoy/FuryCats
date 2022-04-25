@@ -15,6 +15,8 @@
 #include "CircleCollider.h"
 #include "RectangleCollider.h"
 #include "Pong.h"
+#include "LevelZero.h"
+
 
 using namespace std;
 
@@ -90,7 +92,7 @@ int main(int argc, char** argv)
     CircleCollider circle(320, 330, 10);
     std::cout << circle.PointInside(320, 330);
 
-    App::StartApp(600, 400, new Scene1());
+    App::StartApp(1280, 720, new LevelZero());
 
      
 

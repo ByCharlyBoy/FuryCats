@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Vector.h"
 
-float World::Gravity = 9.8f;
+float World::Gravity = 9.8f; 
 std::vector<GameObject*> World::registeredObject;
 
 void World::Update(float deltaTime)

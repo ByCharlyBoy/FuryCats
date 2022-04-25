@@ -76,9 +76,9 @@ void Scene1::Start()
     //speedY = 5; 
 }
 
-void Scene1::Update()
+void Scene1::Update(float deltaTime)
 {
-    Scene::Update();
+    Scene::Update(deltaTime);
     
     //1era imagen
     if (InputManager::IsHolding(SDLK_d))
