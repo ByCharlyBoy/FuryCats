@@ -23,6 +23,7 @@ public:
 	void OnEnd(); 
 
 
+	
 
 	//variables del mundo
 	float timer = 0.0f; 
@@ -30,7 +31,7 @@ public:
 	int score = 0; 
 	//variables del jugador 
 	int life = 3; 
-	bool invencible = false;  
+	bool invencible = false; 
 	int speed_cat = 8; 
 	//variables del enemigo
 	int speed_rat = 18; 
@@ -44,9 +45,11 @@ public:
 
 
 	//speed movimento teclas
-	int speedx = 5; 
-	int speedy = 5; 
+	int catspeedx = 5; 
+	int catspeedy = 5; 
 
+	int catmovementX = 0;
+	int catmovementY = 0; 
 	
 };
 

@@ -84,18 +84,31 @@ void App::Init()
 		return;
 	}
 	_drawSurface = SDL_GetWindowSurface(_surfDisplay);
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	int rmask = 0xff000000;
+	int gmask = 0x00ff0000;
+	int bmask = 0x0000ff00;
+	int amask = 0x000000ff;
+#else
+	int rmask = 0x000000ff;
+	int gmask = 0x0000ff00;
+	int bmask = 0x00ff0000;
+	int amask = 0xff000000;
+#endif
 	_clearSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, _width, _height,
-		32, 0,0, 0, 0);
+		32, 0, 0, 0, 0); //color de la pantalla y limpieza
 	if (!_clearSurface) {
 		std::cout << "ERROR" << SDL_GetError()
 			<< std::endl;
 	}
-	SDL_FillRect(_clearSurface, NULL, 0xFFFF00FF);
+	SDL_FillRect(_clearSurface, NULL, SDL_MapRGB(_clearSurface-> format, 0, 0, 0));
 	InputManager::ResetStorage(); 
 }
 
 void App::Update()
 {
+	SDL_FillRect(_clearSurface, NULL, SDL_MapRGB(_clearSurface-> format, 0, 0, 0));
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) 
 		EventPolling(&e);
