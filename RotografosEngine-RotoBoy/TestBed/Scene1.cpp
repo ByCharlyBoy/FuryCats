@@ -141,7 +141,7 @@ void Scene1::Update(float deltaTime)
 
 
    // juanpi->MoveX(1);
-   // juanpi2->MoveX(-1); 
+   //juanpi2->MoveX(-1); 
     juanpi->Update();
     juanpi2->Update(); 
 

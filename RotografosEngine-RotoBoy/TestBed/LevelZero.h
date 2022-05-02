@@ -17,8 +17,10 @@ public:
 	void Timer(); 
 	void Score(); 
 	void move_Player(); 
-	void move_Obstacle(); 
-	void move_Rat();
+	void move_ObstacleX(); 
+	void move_ObstacleY(); 
+	void move_RatX();
+	void move_RatY(); 
 	int AddPoints(int player_points, int ia_points); 
 	void OnEnd(); 
 
@@ -34,13 +36,14 @@ public:
 	bool invencible = false; 
 	int speed_cat = 8; 
 	//variables del enemigo
-	int speed_rat = 18; 
 	int rat_points = 5; 
 	int podadora_points = -5; 
 	int arrastradora_points = -3; 
-	GameObject* rat;
+	GameObject* ratX;
+	GameObject* ratY; 
 	GameObject* cat; 
-	GameObject* podadora; 
+	GameObject* podadora;
+	GameObject* podadoraY;
 	GameObject* arrastahojas; 
 
 
@@ -50,6 +53,15 @@ public:
 
 	int catmovementX = 0;
 	int catmovementY = 0; 
+
+	int ratspeedx = 8; 
+	int ratspeedy = 8;
+
+	int ratmovementX = ratspeedx;
+	int ratmovementY = ratspeedy;
+
+	int podspeedx = 5; 
+	int podmovementX = podspeedx;
 	
 };
 
