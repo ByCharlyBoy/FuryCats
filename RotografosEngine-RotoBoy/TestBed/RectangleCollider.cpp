@@ -1,5 +1,6 @@
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
+#include <iostream>
 
 RectangleCollider::RectangleCollider(int maxX, int maxY, int minX, int minY)
 {
@@ -21,7 +22,7 @@ bool RectangleCollider::IsCollinding(Collider *other)
 	if (other->Type() == Square)
 	{
 		RectangleCollider* o = (RectangleCollider*)other;
-		if 
+		if
 			(position->GetComponent(0, 0) + topLimit[0] >= o->position->GetComponent(0, 0) &&
 			position->GetComponent(0, 0) <= o->position->GetComponent(0, 0) + o->topLimit[0] &&
 			position->GetComponent(1, 0) + topLimit[1] >= o->position->GetComponent(1, 0) &&

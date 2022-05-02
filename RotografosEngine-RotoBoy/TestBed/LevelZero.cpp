@@ -41,24 +41,33 @@ void LevelZero::Update(float deltaTime) //set pos
 	Scene::Update(deltaTime); 
 	
 	//moviemnto del personaje desde el update
-	move_Player();
-	cat->Update();
-
+	
 
 	timer += deltaTime; 
 	//std::cout << timer <<std::endl; 
 
 	//rata en X
-	move_RatX();
-	ratX->Update();
+	if (rataliveX)
+	{
+		move_RatX();
+		ratX->Update();
+	}
 
 	//rata en Y
-	move_RatY(); 
-	ratY->Update(); 
-	
+	if (rataliveY)
+	{
+		move_RatY();
+		ratY->Update();
+	}
 	//podadora en X
-	move_ObstacleX(); 
+	if (catalive)
+	{
+		move_Player(); 
+		cat->Update(); 
+	}
 	podadora->Update();
+	move_ObstacleX();
+	Player_Collide();
 }
 
 
@@ -74,6 +83,21 @@ void LevelZero::Obstacle_Collide() //collision del obstaculo
 
 void LevelZero::Player_Collide() //collision del jugador
 {
+	if (rataliveX && cat->GetCollider()->IsCollinding(ratX->GetCollider()))
+	{
+		//std::cout << "Comidita" << std::endl;
+		rataliveX = false;
+	}
+	if (rataliveY && cat->GetCollider()->IsCollinding(ratY->GetCollider()))
+	{
+		rataliveY = false;
+	}
+	if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
+	{
+		std::cout << "Comidita" << std::endl;
+		catalive = false; 
+		
+	}
 
 }
 
@@ -161,13 +185,12 @@ void LevelZero::move_Player() //mov del jugador
 
 void LevelZero::move_ObstacleX() //mov del obstaculo
 {
-	std::cout << (podadora->GetPos()->x + podadora->GetPos()->w >= App::GetWidth()) << std::endl;
 	if (podadora->GetPos()->x + podadora->GetPos()->w >= App::GetWidth())
 	{
 		podmovementX = -podspeedx; //limite derecha
-		std::cout << " porfi jala" << std::endl;
+
 	}
-	else if (ratX->GetPos()->x <= 0)
+	else if (podadora->GetPos()->x <= 0)
 	{
 		podmovementX = podspeedx; //limite izquierda
 	}
@@ -191,11 +214,10 @@ void LevelZero::move_ObstacleY() //en caso de necsitarlo (no lo creo)
 
 void LevelZero::move_RatX()
 {
-	std::cout << (ratX->GetPos()->x + ratX->GetPos()->w >= App::GetWidth()) << std::endl;
 	if (ratX->GetPos()->x + ratX->GetPos()->w >= App::GetWidth())
 	{
 		ratmovementX = -ratspeedx; //limite derecha
-		std::cout << " porfi jala" << std::endl;
+		
 	}
 	else if (ratX->GetPos()->x <= 0)
 	{
@@ -216,7 +238,6 @@ void LevelZero::move_RatX()
 
 void LevelZero::move_RatY()
 {
-	std::cout << (ratY->GetPos()->y + ratY->GetPos()->h >= App::GetHeight()) << std::endl;
 	if (ratY->GetPos()->y + ratY->GetPos()->h >= App::GetHeight())
 	{
 		ratmovementY = -ratspeedy;  
@@ -254,4 +275,7 @@ void LevelZero::OnEnd()
 }
 
 
+//para el viernes ---- arreglos  de los ratones
+//diseno del nivel, donde vamos a poner cada cosa
+//que al moirir el gato, haga un respanw (por el tema de vidas)
 

@@ -62,6 +62,11 @@ public:
 
 	int podspeedx = 5; 
 	int podmovementX = podspeedx;
+
+	bool rataliveX = true; 
+	bool rataliveY = true; 
+
+	bool catalive = true; 
 	
 };
 

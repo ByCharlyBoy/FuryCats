@@ -74,6 +74,11 @@ void GameObject::Update()
 	if (collider != nullptr)
 	{
 		collider->UpdatePosition(spritePosition->x, spritePosition->y); 
+		if (collider->Type() == Square) 
+		{
+			((RectangleCollider*)collider)->topLimit[0] = spritePosition->w;
+			((RectangleCollider*)collider)->topLimit[1] = spritePosition->h;
+		}
 	}
 	if (sprite.size() != 0)
 	{
