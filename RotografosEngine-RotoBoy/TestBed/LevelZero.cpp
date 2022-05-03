@@ -99,6 +99,12 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		{
 			ratY[i]->Update();
 		}
+		else
+		{
+			setPosrat(ratY[i], 0); 
+			rataliveY[i] = true; 
+			i = i - 1; 
+		}
 	}
 	
 	//podadora en X y parte de su collision
@@ -273,7 +279,7 @@ void LevelZero::move_ObstacleY() //en caso de necsitarlo (no lo creo)
 
 void LevelZero::move_RatX()
 {
-	for (int i = 0; i < NUM_RATS_X; i++)
+	for (int i = 0; i < NUM_RATS_X; i++) 
 	{
 		if (ratX[i]->GetPos()->x + ratX[i]->GetPos()->w >= App::GetWidth())
 		{

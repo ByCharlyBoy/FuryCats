@@ -44,7 +44,7 @@ public:
 	int rat_points = 5; 
 	int podadora_points = -5; 
 	int arrastradora_points = -3; 
-	GameObject* ratX[NUM_RATS_X]; //cantidad de ratas
+	GameObject* ratX[NUM_RATS_X]; //cantidad de ratas[3]
 	GameObject* ratY[NUM_RATS_Y]; 
 	GameObject* cat; 
 	GameObject* podadora;
@@ -74,5 +74,6 @@ public:
 	bool catalive = true; 
 	
 	int setPosrat(GameObject* rat, int rat_type); 
+
 };
 
