@@ -28,7 +28,8 @@ public:
 	enum cons
 	{
 		NUM_RATS_X = 4,
-		NUM_RATS_Y = 4
+		NUM_RATS_Y = 4,
+		NUM_PODS = 2
 	}; 
 	
 
@@ -47,7 +48,7 @@ public:
 	GameObject* ratX[NUM_RATS_X]; //cantidad de ratas[3]
 	GameObject* ratY[NUM_RATS_Y]; 
 	GameObject* cat; 
-	GameObject* podadora;
+	GameObject* podadora[NUM_PODS];
 	GameObject* podadoraY;
 	GameObject* arrastahojas; 
 
@@ -66,7 +67,7 @@ public:
 	int ratmovementY[NUM_RATS_Y]; 
 
 	int podspeedx = 5; 
-	int podmovementX = podspeedx;
+	int podmovementX[NUM_PODS];
 
 	bool rataliveX[NUM_RATS_X];  
 	bool rataliveY[NUM_RATS_Y]; 

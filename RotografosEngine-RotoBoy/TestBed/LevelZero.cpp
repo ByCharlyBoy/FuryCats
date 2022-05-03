@@ -19,8 +19,12 @@ LevelZero::LevelZero()
 		ratmovementY[i] = ratspeedy;
 
 	}
+	for (int i = 0; i < NUM_PODS; i++)
+	{
+		podadora[i] = new GameObject("FuryCats/Podadora.png");
+		podmovementX[i] = podspeedx; 
+	}
 
-	podadora = new GameObject("FuryCats/Podadora.png"); 
 }
 
 LevelZero::~LevelZero() 
@@ -30,17 +34,23 @@ LevelZero::~LevelZero()
 
 int LevelZero::setPosrat(GameObject* rat, int rat_type)
 {
-	int randNum, randNum2; 
-	if (rat_type == 0)
+	int randNum, randNum2; 	
+	switch (rat_type)
 	{
+	case 0: 
 		randNum = rand() % (1280 - 0 + 1) + 1;
 		randNum2 = rand() % (720 - 0 + 1) + 1;
-		rat->SetPos(randNum, App::GetHeight() - randNum2); 
-	}
-	else
-	{
+		rat->SetPos(randNum, App::GetHeight() - randNum2);
+		break; 
+
+	case 1:
 		randNum = rand() % (720 - 0 + 1) + 1;
 		rat->SetPos(randNum, App::GetHeight() - randNum); //randomiza entre 1280 y 720
+
+	default:
+		randNum = rand() % (1280 - 0 + 1) + 1;
+		rat->SetPos(randNum, App::GetHeight() - randNum);
+		break;
 	}
 	
 
@@ -65,8 +75,12 @@ void LevelZero::Start()
 		setPosrat(ratY[i], 0); 
 	}
 	//---------------------------------------
-	podadora->CreateCollider(Square); 
-	podadora->SetPos(650, App::GetHeight() - 600); 
+	for (int i = 0; i < NUM_PODS; i++) {
+		podadora[i]->CreateCollider(Square);
+		setPosrat(podadora[i], 2); 
+		//podadora[i]->SetPos(650, App::GetHeight() - 600);
+	}
+	
 
 	inGame = true; 
 	score = 0; 
@@ -106,6 +120,12 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 			i = i - 1; 
 		}
 	}
+
+	for (int i = 0; i < NUM_RATS_Y; i++) {
+		
+		if (podadora[i] != nullptr)
+			podadora[i]->Update();
+	}
 	
 	//podadora en X y parte de su collision
 	if (catalive)
@@ -115,7 +135,6 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 	}
 	move_RatX();
 	move_RatY();
-	podadora->Update();
 	move_ObstacleX();
 	Player_Collide();
 }
@@ -142,12 +161,12 @@ void LevelZero::Player_Collide() //collision del jugador
 			rataliveX[i] = false;
 		}
 		
-		if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
+		/*if (cat->GetCollider() && podadora[i]->GetCollider()->IsCollinding(cat->GetCollider()))
 		{
 			std::cout << "Se muere" << std::endl;
 			catalive = false;
 
-		}
+		}*/
 	}
 	for (int i = 0; i < NUM_RATS_Y; i++)
 	{
@@ -156,7 +175,11 @@ void LevelZero::Player_Collide() //collision del jugador
 			rataliveY[i] = false;
 		}
 
-		if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
+		
+	}
+	for (int i = 0; i < NUM_PODS; i++)
+	{
+		if (cat->GetCollider() && podadora[i]->GetCollider()->IsCollinding(cat->GetCollider()))
 		{
 			std::cout << "Se muere" << std::endl;
 			catalive = false;
@@ -250,25 +273,30 @@ void LevelZero::move_Player() //mov del jugador
 
 void LevelZero::move_ObstacleX() //mov del obstaculo
 {
-	if (podadora->GetPos()->x + podadora->GetPos()->w >= App::GetWidth())
-	{
-		podmovementX = -podspeedx; //limite derecha
+	for (int i = 0; i < NUM_RATS_Y; i++) {
+		if (podadora[i] == nullptr)
+			continue; 
+		if (podadora[i]->GetPos()->x + podadora[i]->GetPos()->w >= App::GetWidth())
+		{
+			podmovementX[i] = -podspeedx; //limite derecha
 
-	}
-	else if (podadora->GetPos()->x <= 0)
-	{
-		podmovementX = podspeedx; //limite izquierda
-	}
+		}
+		else if (podadora[i]->GetPos()->x <= 0)
+		{
+			podmovementX[i] = podspeedx; //limite izquierda
+		}
 
-	if (podadora->GetPos()->x + podadora->GetPos()->w >= App::GetWidth())
-		podadora->SetX(App::GetWidth() - podadora->GetPos()->w - 10);
-	if (podadora->GetPos()->y + podadora->GetPos()->h >= App::GetHeight())
-		podadora->SetY(App::GetHeight() - podadora->GetPos()->h);
-	if (podadora->GetPos()->x <= 0)
-		podadora->SetX(0);
-	if (podadora->GetPos()->y <= 0)
-		podadora->SetY(0);
-	podadora->MoveX(podmovementX);
+		if (podadora[i]->GetPos()->x + podadora[i]->GetPos()->w >= App::GetWidth())
+			podadora[i]->SetX(App::GetWidth() - podadora[i]->GetPos()->w - 10);
+		if (podadora[i]->GetPos()->y + podadora[i]->GetPos()->h >= App::GetHeight())
+			podadora[i]->SetY(App::GetHeight() - podadora[i]->GetPos()->h);
+		if (podadora[i]->GetPos()->x <= 0)
+			podadora[i]->SetX(0);
+		if (podadora[i]->GetPos()->y <= 0)
+			podadora[i]->SetY(0);
+		podadora[i]->MoveX(podmovementX[i]);
+	}
+	
 }
 
 void LevelZero::move_ObstacleY() //en caso de necsitarlo (no lo creo)
