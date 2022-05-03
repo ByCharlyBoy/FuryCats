@@ -7,8 +7,19 @@
 LevelZero::LevelZero() 
 {
 	cat = new GameObject("FuryCats/Cat_rainbow.png");
-	ratX = new GameObject("FuryCats/Rat.png"); 
-	ratY = new GameObject("FuryCats/Rat.png"); 
+	for (int i = 0; i < NUM_RATS_X; i++){
+		ratX[i] = new GameObject("FuryCats/Rat.png"); //instacia la rat 
+		rataliveX[i] = true; 
+		ratmovementX[i] = ratspeedx; 
+		
+	}
+	for (int i = 0; i < NUM_RATS_Y; i++) {
+		ratY[i] = new GameObject("FuryCats/Rat.png");
+		rataliveY[i] = true;
+		ratmovementY[i] = ratspeedy;
+
+	}
+
 	podadora = new GameObject("FuryCats/Podadora.png"); 
 }
 
@@ -17,17 +28,42 @@ LevelZero::~LevelZero()
 
 }
 
+int LevelZero::setPosrat(GameObject* rat, int rat_type)
+{
+	int randNum, randNum2; 
+	if (rat_type == 0)
+	{
+		randNum = rand() % (1280 - 0 + 1) + 1;
+		randNum2 = rand() % (720 - 0 + 1) + 1;
+		rat->SetPos(randNum, App::GetHeight() - randNum2); 
+	}
+	else
+	{
+		randNum = rand() % (720 - 0 + 1) + 1;
+		rat->SetPos(randNum, App::GetHeight() - randNum); //randomiza entre 1280 y 720
+	}
+	
+
+	return 0; 
+	
+}
+
 void LevelZero::Start() 
 {
 	Scene::Start(); 
 	cat->CreateCollider(Square); 
 	cat->SetPos(0, App::GetHeight() - 300);
 	//--------------------------------------
-	ratX->CreateCollider(Square); 
-	ratX->SetPos(750, App::GetHeight() - 250); 
+	for (int i = 0; i < NUM_RATS_X; i++) {
+		ratX[i]->CreateCollider(Square); 
+		setPosrat(ratX[i], 0);
+	}
 	//----------------------------------------
-	ratY->CreateCollider(Square);
-	ratY->SetPos(750, App::GetHeight() - 250);
+	for (int i = 0; i < NUM_RATS_Y; i++) {
+		
+		ratY[i]->CreateCollider(Square);
+		setPosrat(ratY[i], 0); 
+	}
 	//---------------------------------------
 	podadora->CreateCollider(Square); 
 	podadora->SetPos(650, App::GetHeight() - 600); 
@@ -36,35 +72,43 @@ void LevelZero::Start()
 	score = 0; 
 }
 
-void LevelZero::Update(float deltaTime) //set pos
+void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desde el update
 {
 	Scene::Update(deltaTime); 
 	
-	//moviemnto del personaje desde el update
-	
-
 	timer += deltaTime; 
 	//std::cout << timer <<std::endl; 
 
-	//rata en X
-	if (rataliveX)
-	{
-		move_RatX();
-		ratX->Update();
+	for (int i = 0; i < NUM_RATS_X; i++) {
+		//rata en X y parte de su collision
+		if (rataliveX[i])
+		{	
+			ratX[i]->Update();
+		}
+		else 
+		{
+			setPosrat(ratX[i], 0); 
+			rataliveX[i] = true; 
+			i = i - 1; 
+		}
 	}
 
-	//rata en Y
-	if (rataliveY)
-	{
-		move_RatY();
-		ratY->Update();
+	//rata en Y y parte de su collision
+	for (int i = 0; i < NUM_RATS_Y; i++) {
+		if (rataliveY[i])
+		{
+			ratY[i]->Update();
+		}
 	}
-	//podadora en X
+	
+	//podadora en X y parte de su collision
 	if (catalive)
 	{
 		move_Player(); 
 		cat->Update(); 
 	}
+	move_RatX();
+	move_RatY();
 	podadora->Update();
 	move_ObstacleX();
 	Player_Collide();
@@ -74,6 +118,7 @@ void LevelZero::Update(float deltaTime) //set pos
 void LevelZero::rat_Collide() //colison de la rata
 {
 	//la rata(enemigo) se esfuma cuando el gao la toca
+	
 }
 
 void LevelZero::Obstacle_Collide() //collision del obstaculo
@@ -83,20 +128,34 @@ void LevelZero::Obstacle_Collide() //collision del obstaculo
 
 void LevelZero::Player_Collide() //collision del jugador
 {
-	if (rataliveX && cat->GetCollider()->IsCollinding(ratX->GetCollider()))
+	for (int i = 0; i < NUM_RATS_X; i++)
 	{
-		//std::cout << "Comidita" << std::endl;
-		rataliveX = false;
-	}
-	if (rataliveY && cat->GetCollider()->IsCollinding(ratY->GetCollider()))
-	{
-		rataliveY = false;
-	}
-	if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
-	{
-		std::cout << "Comidita" << std::endl;
-		catalive = false; 
+		if (rataliveX[i] && cat->GetCollider()->IsCollinding(ratX[i]->GetCollider()))
+		{
+			//std::cout << "Comidita" << std::endl;
+			rataliveX[i] = false;
+		}
 		
+		if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
+		{
+			std::cout << "Se muere" << std::endl;
+			catalive = false;
+
+		}
+	}
+	for (int i = 0; i < NUM_RATS_Y; i++)
+	{
+		if (rataliveY[i] && cat->GetCollider()->IsCollinding(ratY[i]->GetCollider()))
+		{
+			rataliveY[i] = false;
+		}
+
+		if (cat->GetCollider() && podadora->GetCollider()->IsCollinding(cat->GetCollider()))
+		{
+			std::cout << "Se muere" << std::endl;
+			catalive = false;
+
+		}
 	}
 
 }
@@ -214,49 +273,58 @@ void LevelZero::move_ObstacleY() //en caso de necsitarlo (no lo creo)
 
 void LevelZero::move_RatX()
 {
-	if (ratX->GetPos()->x + ratX->GetPos()->w >= App::GetWidth())
+	for (int i = 0; i < NUM_RATS_X; i++)
 	{
-		ratmovementX = -ratspeedx; //limite derecha
-		
-	}
-	else if (ratX->GetPos()->x <= 0)
-	{
-		ratmovementX = ratspeedx; //limite izquierda
-	}
+		if (ratX[i]->GetPos()->x + ratX[i]->GetPos()->w >= App::GetWidth())
+		{
+			ratmovementX[i] = -ratspeedx; //limite derecha 
+		}
+		else if (ratX[i]->GetPos()->x - ratX[i]->GetPos()->w <= 0)
+		{
+			ratmovementX[i] = ratspeedx; //limite izquierda
+		}
 
-	if (ratX->GetPos()->x + ratX->GetPos()->w >= App::GetWidth())
-		ratX->SetX(App::GetWidth() - ratX->GetPos()->w - 10);
-	if (ratX->GetPos()->y + ratX->GetPos()->h >= App::GetHeight())
-		ratX->SetY(App::GetHeight() - ratX->GetPos()->h);
-	if (ratX->GetPos()->x <= 0)
-		ratX->SetX(0);
-	if (ratX->GetPos()->y <= 0)
-		ratX->SetY(0);
-	ratX->MoveX(ratmovementX); 
+		if (ratX[i]->GetPos()->x + ratX[i]->GetPos()->w >= App::GetWidth())
+			ratX[i]->SetX(App::GetWidth() - ratX[i]->GetPos()->w - 10);
+		if (ratX[i]->GetPos()->y + ratX[i]->GetPos()->h >= App::GetHeight())
+			ratX[i]->SetY(App::GetHeight() - ratX[i]->GetPos()->h);
+		if (ratX[i]->GetPos()->x <= 0)
+			ratX[i]->SetX(0);
+		if (ratX[i]->GetPos()->y <= 0)
+			ratX[i]->SetY(0);
+		ratX[i]->MoveX(ratmovementX[i]);
+	}
 	
 }
 
 void LevelZero::move_RatY()
 {
-	if (ratY->GetPos()->y + ratY->GetPos()->h >= App::GetHeight())
+	for (int i = 0; i < NUM_RATS_Y; i++)
 	{
-		ratmovementY = -ratspeedy;  
-	}
-	else if (ratY->GetPos()->y <=0)
-	{
-		ratmovementY = ratspeedy; 
-	}
+		if (ratY[i]->GetPos()->y + ratY[i]->GetPos()->h >= App::GetHeight())
+		{
+			ratmovementY[i] = -ratspeedy;
+		}
+		else if (ratY[i]->GetPos()->y <= 0)
+		{
+			ratmovementY[i] = ratspeedy;
+		}
 
-	if (ratY->GetPos()->y + ratY->GetPos()->h >= App::GetHeight())
-		ratY->SetY(App::GetHeight() - ratY->GetPos()->h - 10);
-	if (ratY->GetPos()->y + ratY->GetPos()->w >= App::GetWidth())
-		ratY->SetX(App::GetWidth() - ratY->GetPos()->w);
-	if (ratY->GetPos()->y <= 0)
-		ratY->SetY(0); 
-	if (ratX->GetPos()->y <= 0)
-		ratX->SetX(0);
-	ratY->MoveY(ratmovementY); 	
+		if (ratY[i]->GetPos()->y + ratY[i]->GetPos()->h >= App::GetHeight())
+			ratY[i]->SetY(App::GetHeight() - ratY[i]->GetPos()->h - 10);
+		if (ratY[i]->GetPos()->y + ratY[i]->GetPos()->w >= App::GetWidth())
+			ratY[i]->SetX(App::GetWidth() - ratY[i]->GetPos()->w);
+		if (ratY[i]->GetPos()->y <= 0)
+			ratY[i]->SetY(0);
+		/*if (ratY[i]->GetPos()->y <= 0)
+			ratY[i]->SetX(0);*/
+			
+
+
+		ratY[i]->MoveY(ratmovementY[i]);
+	}
 }
+	
 
 int LevelZero::AddPoints(int player_points, int ia_points)
 {
@@ -275,7 +343,13 @@ void LevelZero::OnEnd()
 }
 
 
+
+
 //para el viernes ---- arreglos  de los ratones
 //diseno del nivel, donde vamos a poner cada cosa
 //que al moirir el gato, haga un respanw (por el tema de vidas)
 
+// el gameobject, deberia de tener su propio movimiento, *******
+//para que sea independiente cda uno de los sprites (ratas)
+//cuando mate una rata, deberia de salir otra  xD....
+//los enums, quize tener una constante para los arreglos, para cambiarlos solo 1 vez***

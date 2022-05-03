@@ -19,7 +19,7 @@ void App::StartApp(int ScreenSizeX, int ScreenSizeY, Scene* startScene)
 {
 	_width = ScreenSizeX;
 	_height = ScreenSizeY;
-	_currentScene = startScene;
+	_currentScene = startScene; 
 	_nextScene = nullptr; 
 	_mainCamera = new Camera(); 
 	_lastTime = std::chrono::system_clock::now(); 
@@ -77,7 +77,7 @@ void App::Init()
 	int imginit = IMG_Init(flags);
 	if ((imginit & flags) != flags)
 		return; 
-	_surfDisplay = SDL_CreateWindow("Juego mamalon", SDL_WINDOWPOS_CENTERED, 
+	_surfDisplay = SDL_CreateWindow("Fury-Cats", SDL_WINDOWPOS_CENTERED, 
 		SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_RESIZABLE);
 	if (_surfDisplay == nullptr) {
 		_programIsExecuting = false;

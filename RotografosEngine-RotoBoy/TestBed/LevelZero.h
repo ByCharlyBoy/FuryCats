@@ -24,7 +24,12 @@ public:
 	int AddPoints(int player_points, int ia_points); 
 	void OnEnd(); 
 
-
+	//constantes
+	enum cons
+	{
+		NUM_RATS_X = 4,
+		NUM_RATS_Y = 4
+	}; 
 	
 
 	//variables del mundo
@@ -39,8 +44,8 @@ public:
 	int rat_points = 5; 
 	int podadora_points = -5; 
 	int arrastradora_points = -3; 
-	GameObject* ratX;
-	GameObject* ratY; 
+	GameObject* ratX[NUM_RATS_X]; //cantidad de ratas
+	GameObject* ratY[NUM_RATS_Y]; 
 	GameObject* cat; 
 	GameObject* podadora;
 	GameObject* podadoraY;
@@ -57,16 +62,17 @@ public:
 	int ratspeedx = 8; 
 	int ratspeedy = 8;
 
-	int ratmovementX = ratspeedx;
-	int ratmovementY = ratspeedy;
+	int ratmovementX[NUM_RATS_X]; 
+	int ratmovementY[NUM_RATS_Y]; 
 
 	int podspeedx = 5; 
 	int podmovementX = podspeedx;
 
-	bool rataliveX = true; 
-	bool rataliveY = true; 
+	bool rataliveX[NUM_RATS_X];  
+	bool rataliveY[NUM_RATS_Y]; 
 
 	bool catalive = true; 
 	
+	int setPosrat(GameObject* rat, int rat_type); 
 };
 
