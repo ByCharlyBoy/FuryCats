@@ -9,7 +9,6 @@ class LevelZero :
 public:
 	LevelZero();
 	~LevelZero();
-	void PrequelScene(); 
 	void Start();
 	void Update(float deltaTime);
 	void rat_Collide(); 

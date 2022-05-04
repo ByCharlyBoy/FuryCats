@@ -454,11 +454,11 @@ void LevelZero::OnEnd()
 
 
 
-//para el viernes ---- arreglos  de los ratones
+
 //diseno del nivel, donde vamos a poner cada cosa
-//que al moirir el gato, haga un respanw (por el tema de vidas)
+
 
 // el gameobject, deberia de tener su propio movimiento, *******
 //para que sea independiente cda uno de los sprites (ratas)
-//cuando mate una rata, deberia de salir otra  xD....
-//los enums, quize tener una constante para los arreglos, para cambiarlos solo 1 vez***
+
+
