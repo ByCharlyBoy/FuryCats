@@ -7,6 +7,7 @@
 LevelZero::LevelZero() 
 {
 	cat = new GameObject("FuryCats/Cat_rainbow.png");
+
 	for (int i = 0; i < NUM_RATS_X; i++){
 		ratX[i] = new GameObject("FuryCats/Rat.png"); //instacia la rat 
 		rataliveX[i] = true; 
@@ -133,10 +134,12 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		move_Player(); 
 		cat->Update(); 
 	}
+
 	move_RatX();
 	move_RatY();
 	move_ObstacleX();
 	Player_Collide();
+
 }
 
 
@@ -159,6 +162,9 @@ void LevelZero::Player_Collide() //collision del jugador
 		{
 			//std::cout << "Comidita" << std::endl;
 			rataliveX[i] = false;
+			score += 10;
+			std::cout << "Se sumaron 10 puntos";
+			std::cout << score << std::endl;
 		}
 		
 		/*if (cat->GetCollider() && podadora[i]->GetCollider()->IsCollinding(cat->GetCollider()))
@@ -173,16 +179,32 @@ void LevelZero::Player_Collide() //collision del jugador
 		if (rataliveY[i] && cat->GetCollider()->IsCollinding(ratY[i]->GetCollider()))
 		{
 			rataliveY[i] = false;
+			score += 10;
+			std::cout << "Se sumaron 10 puntos" << std::endl;
+			std::cout << score << std::endl;
 		}
 
 		
 	}
 	for (int i = 0; i < NUM_PODS; i++)
 	{
-		if (cat->GetCollider() && podadora[i]->GetCollider()->IsCollinding(cat->GetCollider()))
+		if (catalive && podadora[i]->GetCollider()->IsCollinding(cat->GetCollider()))
 		{
-			std::cout << "Se muere" << std::endl;
 			catalive = false;
+			score -= 5;
+			std::cout << "Se restaron 5 puntos" << std::endl;
+			std::cout << score << std::endl;
+
+			life -= 1;
+			std::cout << "Se muere" << std::endl;
+			if (catalive == false && life >= 0)
+			{
+				 
+				cat->SetPos(0, App::GetHeight() - 300);
+				catalive = true;
+				std::cout << "Revivido" << std::endl;
+
+			}
 
 		}
 	}
