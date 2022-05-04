@@ -25,6 +25,7 @@ LevelZero::LevelZero()
 		podadora[i] = new GameObject("FuryCats/Podadora.png");
 		podmovementX[i] = podspeedx; 
 	}
+	prequelScene = new GameObject("FuryCats/HD_FuryCats_CoverPurple.png"); 
 
 }
 
