@@ -64,7 +64,7 @@ void LevelZero::Start()
 {
 	Scene::Start(); 
 	cat->CreateCollider(Square); 
-	cat->SetPos(0, App::GetHeight() - 300);
+	cat->SetPos(0, App::GetHeight() - 100);
 	//--------------------------------------
 	for (int i = 0; i < NUM_RATS_X; i++) {
 		ratX[i]->CreateCollider(Square); 
@@ -135,6 +135,18 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		move_Player(); 
 		cat->Update(); 
 	}
+
+	if (InputManager::IsPressed(SDLK_SPACE))
+	{
+		if (prequeleScene == false)
+		{
+			prequeleScene = true; 
+			std::cout << "New Scene"; 
+		}
+	}
+
+	if (prequeleScene == false)
+		prequelScene->Update(); 
 
 	move_RatX();
 	move_RatY();
@@ -236,15 +248,23 @@ void LevelZero::move_Player() //mov del jugador
 		cat->GetPos()->x <= 0 ||
 		cat->GetPos()->y <= 0)
 	{
-		if (cat->GetPos()->x <= 0)
+		if (cat->GetPos()->x <= 0) {
 			cat->SetX(5);
-		else if (cat->GetPos()->x >= App::GetWidth() - cat->GetPos()->w)
+			touchingmX = true;
+		}
+		else if (cat->GetPos()->x >= App::GetWidth() - cat->GetPos()->w) {
 			cat->SetX(App::GetWidth() - cat->GetPos()->w - 5);
+			touchingX = true;
+		}
 
-		if (cat->GetPos()->y <= 0)
+		if (cat->GetPos()->y <= 0) {
 			cat->SetY(5);
-		else if (cat->GetPos()->y >= App::GetHeight() - cat->GetPos()->h)
+			touchingmY = true;
+		}
+		else if (cat->GetPos()->y >= App::GetHeight() - cat->GetPos()->h) {
 			cat->SetY(App::GetHeight() - cat->GetPos()->h - 5);
+			touchingY = true;
+		}
 
 		catmovementX = 0;
 		catmovementY = 0;
@@ -253,41 +273,73 @@ void LevelZero::move_Player() //mov del jugador
 	if (catmovementX == 0 && catmovementY == 0)
 	{
 
-		if (InputManager::IsReleased(SDLK_q))
+		if (InputManager::IsReleased(SDLK_q) && !touchingmX && !touchingmY)
 		{
 			catmovementX = -catspeedx; 
 			catmovementY = -catspeedy; 
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_w))
+		if (InputManager::IsReleased(SDLK_w) && !touchingmY)
 		{
 			catmovementY = -catspeedy;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_e))
+		if (InputManager::IsReleased(SDLK_e) && !touchingX && !touchingmY)
 		{
 			catmovementX = catspeedx;
 			catmovementY = -catspeedy;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_a))
+		if (InputManager::IsReleased(SDLK_a) && !touchingmX)
 		{
 			catmovementX = -catspeedx;	
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_d))
+		if (InputManager::IsReleased(SDLK_d) && !touchingX)
 		{
 			catmovementX = catspeedx;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_z))
+		if (InputManager::IsReleased(SDLK_z) && !touchingmX && !touchingY)
 		{
 			catmovementX = -catspeedx;
 			catmovementY = catspeedy;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_x))
+		if (InputManager::IsReleased(SDLK_x) && !touchingY)
 		{
 			catmovementY = catspeedy;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
-		if (InputManager::IsReleased(SDLK_c))
+		if (InputManager::IsReleased(SDLK_c) && !touchingX && !touchingY)
 		{
 			catmovementX = catspeedx;
-			catmovementY = -catspeedy;
+			catmovementY = catspeedy;
+			touchingX = false;
+			touchingmX = false;
+			touchingY = false;
+			touchingmY = false;
 		}
 	}
 	cat->Move(catmovementX, catmovementY);

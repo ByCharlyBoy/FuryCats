@@ -63,6 +63,11 @@ public:
 	int catmovementX = 0;
 	int catmovementY = 0; 
 
+	bool touchingX = false;
+	bool touchingmX = false;
+	bool touchingY = false;
+	bool touchingmY = false;
+
 	int ratspeedx = 8; 
 	int ratspeedy = 8;
 
