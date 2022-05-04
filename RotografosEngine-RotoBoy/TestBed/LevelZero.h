@@ -9,6 +9,7 @@ class LevelZero :
 public:
 	LevelZero();
 	~LevelZero();
+	void PrequelScene(); 
 	void Start();
 	void Update(float deltaTime);
 	void rat_Collide(); 
@@ -51,6 +52,8 @@ public:
 	GameObject* podadora[NUM_PODS];
 	GameObject* podadoraY;
 	GameObject* arrastahojas; 
+	GameObject* prequelScene; 
+	bool prequeleScene = false; 
 
 
 	//speed movimento teclas

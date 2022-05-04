@@ -32,6 +32,11 @@ LevelZero::~LevelZero()
 
 }
 
+void LevelZero::PrequelScene()
+{
+	
+}
+
 int LevelZero::setPosrat(GameObject* rat, int rat_type)
 {
 	int randNum, randNum2; 	
@@ -133,10 +138,24 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		move_Player(); 
 		cat->Update(); 
 	}
+	//---------------------------------------- Escena
+	if (InputManager::IsPressed(SDLK_KP_ENTER))
+	{
+		if (prequeleScene == false)
+		{
+			prequeleScene = true;
+			std::cout << "New Scene";
+		}
+	}
+
 	move_RatX();
 	move_RatY();
 	move_ObstacleX();
 	Player_Collide();
+
+	//------------------------------------- Escena
+	if (prequeleScene == false)
+		prequelScene->Update(); 
 }
 
 
