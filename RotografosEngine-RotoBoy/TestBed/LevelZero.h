@@ -27,7 +27,7 @@ public:
 	//constantes
 	enum cons
 	{
-		NUM_RATS_X = 4,
+		NUM_RATS_X = 6,
 		NUM_RATS_Y = 4,
 		NUM_PODS = 2
 	}; 
@@ -45,6 +45,7 @@ public:
 	int rat_points = 5; 
 	int podadora_points = -5; 
 	int arrastradora_points = -3; 
+	GameObject* jardin; 
 	GameObject* ratX[NUM_RATS_X]; //cantidad de ratas[3]
 	GameObject* ratY[NUM_RATS_Y]; 
 	GameObject* cat; 
@@ -53,6 +54,7 @@ public:
 	GameObject* arrastahojas; 
 	GameObject* prequelScene; 
 	bool prequeleScene = false; 
+	bool sceneStarting = true;
 
 
 	//speed movimento teclas
@@ -81,7 +83,7 @@ public:
 
 	bool catalive = true; 
 	
-	int setPosrat(GameObject* rat, int rat_type); 
+	void setPosrat(GameObject* rat, int rat_type, int minPosX, int minPosY, int maxPosX, int maxPosY);
 
 };
 

@@ -6,6 +6,7 @@
 
 LevelZero::LevelZero() 
 {
+	jardin = new GameObject("FuryCats/Escena2.png"); 
 	cat = new GameObject("FuryCats/Cat_rainbow.png");
 
 	for (int i = 0; i < NUM_RATS_X; i++){
@@ -34,29 +35,12 @@ LevelZero::~LevelZero()
 
 }
 
-int LevelZero::setPosrat(GameObject* rat, int rat_type)
+void LevelZero::setPosrat(GameObject* rat, int rat_type, int minPosX, int minPosY, int maxPosX, int maxPosY)
 {
 	int randNum, randNum2; 	
-	switch (rat_type)
-	{
-	case 0: 
-		randNum = rand() % (1280 - 0 + 1) + 1;
-		randNum2 = rand() % (720 - 0 + 1) + 1;
-		rat->SetPos(randNum, App::GetHeight() - randNum2);
-		break; 
-
-	case 1:
-		randNum = rand() % (720 - 0 + 1) + 1;
-		rat->SetPos(randNum, App::GetHeight() - randNum); //randomiza entre 1280 y 720
-
-	default:
-		randNum = rand() % (1280 - 0 + 1) + 1;
-		rat->SetPos(randNum, App::GetHeight() - randNum);
-		break;
-	}
-	
-
-	return 0; 
+	randNum = rand() % (maxPosX - 0 + 1) + minPosX;
+	randNum2 = rand() % (maxPosY - 0 + 1) + minPosY;
+	rat->SetPos(randNum, randNum2);
 	
 }
 
@@ -68,18 +52,27 @@ void LevelZero::Start()
 	//--------------------------------------
 	for (int i = 0; i < NUM_RATS_X; i++) {
 		ratX[i]->CreateCollider(Square); 
-		setPosrat(ratX[i], 0);
+		setPosrat(ratX[i], 0, 1, 1, 1280, 720);
 	}
 	//----------------------------------------
 	for (int i = 0; i < NUM_RATS_Y; i++) {
 		
 		ratY[i]->CreateCollider(Square);
-		setPosrat(ratY[i], 0); 
+		setPosrat(ratY[i], 0, 1, 1, 1280, 720);
 	}
 	//---------------------------------------
 	for (int i = 0; i < NUM_PODS; i++) {
 		podadora[i]->CreateCollider(Square);
-		setPosrat(podadora[i], 2); 
+		switch (i) {
+		case 0:
+			//podadora en la parte de arriba
+			setPosrat(podadora[i], 2, 1, 1, 1280, App::GetHeight()/2 - 87);
+			break;
+		case 1:
+			//podadora en la parte de abajo
+			setPosrat(podadora[i], 2, 1, App::GetHeight() / 2, 1280, App::GetHeight() - 134);
+			break;
+		}
 		//podadora[i]->SetPos(650, App::GetHeight() - 600);
 	}
 	
@@ -95,6 +88,8 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 	timer += deltaTime; 
 	//std::cout << timer <<std::endl; 
 
+	jardin->Update(); 
+
 	for (int i = 0; i < NUM_RATS_X; i++) {
 		//rata en X y parte de su collision
 		if (rataliveX[i])
@@ -103,7 +98,7 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		}
 		else 
 		{
-			setPosrat(ratX[i], 0); 
+			setPosrat(ratX[i], 0, 1, 1, 1280, 720);
 			rataliveX[i] = true; 
 			i = i - 1; 
 		}
@@ -117,7 +112,7 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		}
 		else
 		{
-			setPosrat(ratY[i], 0); 
+			setPosrat(ratY[i], 0, 1, 1, 1280, 720);
 			rataliveY[i] = true; 
 			i = i - 1; 
 		}
@@ -148,10 +143,22 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 	if (prequeleScene == false)
 		prequelScene->Update(); 
 
+	//-------------------------------------
+	/*if (catalive = false || life = 0 )
+	{
+		
+	}*/
+	if (InputManager::IsReleased(SDLK_g) && !sceneStarting) {
+		App::ChangeScene(new LevelZero());
+		InputManager::ResetStorage();
+		std::cout << "jala" << std::endl; 
+	}
+
 	move_RatX();
 	move_RatY();
 	move_ObstacleX();
 	Player_Collide();
+	sceneStarting = false;
 
 }
 
@@ -443,12 +450,17 @@ int LevelZero::AddPoints(int player_points, int ia_points)
 
 void LevelZero::OnEnd()
 {
-	Scene::OnEnd(); 
-	delete ratX; 
-	delete ratY; 
-	delete cat; 
-	delete podadora; 
+	Scene::OnEnd();
+	delete jardin; 
+	for(int i = 0; i < NUM_RATS_X; ++i)
+		delete ratX[i];
+	for(int i = 0; i < NUM_RATS_Y; ++i)
+		delete ratY[i]; 
+	delete cat;
+	for (int i = 0; i < NUM_PODS; ++i)
+		delete podadora[i]; 
 	delete arrastahojas; 
+	delete prequelScene;
 }
 
 

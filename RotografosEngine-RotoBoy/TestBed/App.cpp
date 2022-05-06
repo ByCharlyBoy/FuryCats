@@ -38,7 +38,6 @@ void App::KillProgram()
 
 void App::ChangeScene(Scene* newScene)
 {
-	_currentScene->OnEnd();
 	_shouldDeleteScene = true; 
 	if (newScene != nullptr)
 	{
@@ -135,9 +134,13 @@ void App::DeleteScene()
 {
 	if (_shouldDeleteScene)
 	{
+		if(_currentScene != nullptr)
+			_currentScene->OnEnd();
 		delete _currentScene; 
 		_currentScene = _nextScene; 
 		_nextScene = nullptr; 
+		InputManager::ResetStorage();
+		_shouldDeleteScene = false;
 	}
 }
 
