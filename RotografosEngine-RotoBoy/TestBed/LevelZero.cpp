@@ -23,9 +23,14 @@ LevelZero::LevelZero()
 	}
 	for (int i = 0; i < NUM_PODS; i++)
 	{
-		podadora[i] = new GameObject("FuryCats/Podadora.png");
+		podadora[i] = new GameObject("FuryCats/Podadora2.png");
 		podmovementX[i] = podspeedx; 
 	}
+	//for (int i = 0; i < NUM_ARRAS; i++)
+	//{
+	//	arrastahojas[i] = new GameObject("FuryCats/Podadora.png"); 
+	//	//arrastramovY[i] = arrastraspeedy; 
+	//}
 	prequelScene = new GameObject("FuryCats/HD_FuryCats_CoverPurple.png"); 
 
 }
@@ -75,6 +80,21 @@ void LevelZero::Start()
 		}
 		//podadora[i]->SetPos(650, App::GetHeight() - 600);
 	}
+	//------------------------------------------
+	//for (int i = 0; i < NUM_ARRAS; i++)
+	//{
+	//	arrastahojas[i]->CreateCollider(Square); 
+	//	switch (i) {
+	//	case 0:
+	//		//podadora en la parte de arriba
+	//		arrastahojas[i]->SetPos(0, App::GetHeight() - 100);
+	//		break;
+	//	case 1:
+	//		//podadora en la parte de abajo
+	//		arrastahojas[i]->SetPos(0, App::GetHeight() - 200);
+	//		break;
+	//	}
+	//}
 	
 
 	inGame = true; 
@@ -117,13 +137,18 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 			i = i - 1; 
 		}
 	}
-
+	//-------------------------------------------
 	for (int i = 0; i < NUM_RATS_Y; i++) {
 		
 		if (podadora[i] != nullptr)
 			podadora[i]->Update();
 	}
 	
+	/*for (int i = 0; i < NUM_ARRAS; i++) {
+		if (arrastahojas[i] != nullptr)
+			arrastahojas[i]->Update(); 
+	}*/
+
 	//podadora en X y parte de su collision
 	if (catalive)
 	{
@@ -220,7 +245,7 @@ void LevelZero::Player_Collide() //collision del jugador
 			if (catalive == false && life >= 0)
 			{
 				 
-				cat->SetPos(0, App::GetHeight() - 300);
+				cat->SetPos(0, App::GetHeight() - 100);
 				catalive = true;
 				std::cout << "Revivido" << std::endl;
 
@@ -228,6 +253,27 @@ void LevelZero::Player_Collide() //collision del jugador
 
 		}
 	}
+	/*for (int i = 0; i < NUM_ARRAS; i++)
+	{
+		if (catalive && arrastahojas[i]->GetCollider()->IsCollinding(cat->GetCollider()))
+		{
+			catalive = false;
+			score -= 5;
+			std::cout << "Se restaron 3 puntos" << std::endl;
+			std::cout << score << std::endl;
+
+			life -= 1;
+			std::cout << "Se muere" << std::endl;
+			if (catalive == false && life >= 0)
+			{
+
+				cat->SetPos(0, App::GetHeight() - 300);
+				catalive = true;
+				std::cout << "Revivido" << std::endl;
+
+			}
+		}
+	}*/
 
 }
 
@@ -378,6 +424,16 @@ void LevelZero::move_ObstacleX() //mov del obstaculo
 			podadora[i]->SetY(0);
 		podadora[i]->MoveX(podmovementX[i]);
 	}
+
+	//for (int i = 0; i < NUM_ARRAS; i++)
+	//{
+	//	/*if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->h >= App::GetHeight())
+	//		arrastahojas[i]->SetY(App::GetHeight() - arrastahojas[i]->GetPos()->h - 10);
+	//	if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->w >= App::GetWidth())
+	//		arrastahojas[i]->SetX(App::GetWidth() - arrastahojas[i]->GetPos()->w);
+	//	if (arrastahojas[i]->GetPos()->y <= 0)
+	//		arrastahojas[i]->SetY(0);*/
+	//}
 	
 }
 
@@ -459,7 +515,8 @@ void LevelZero::OnEnd()
 	delete cat;
 	for (int i = 0; i < NUM_PODS; ++i)
 		delete podadora[i]; 
-	delete arrastahojas; 
+	for (int i = 0; i < NUM_ARRAS; ++i)
+		delete arrastahojas[i]; 
 	delete prequelScene;
 }
 

@@ -29,7 +29,8 @@ public:
 	{
 		NUM_RATS_X = 6,
 		NUM_RATS_Y = 4,
-		NUM_PODS = 2
+		NUM_PODS = 2,
+		NUM_ARRAS = 1
 	}; 
 	
 
@@ -51,7 +52,7 @@ public:
 	GameObject* cat; 
 	GameObject* podadora[NUM_PODS];
 	GameObject* podadoraY;
-	GameObject* arrastahojas; 
+	GameObject* arrastahojas[NUM_ARRAS]; 
 	GameObject* prequelScene; 
 	bool prequeleScene = false; 
 	bool sceneStarting = true;
@@ -77,6 +78,9 @@ public:
 
 	int podspeedx = 5; 
 	int podmovementX[NUM_PODS];
+
+	/*int arrastraspeedy = 5; 
+	int arrastramovY[NUM_ARRAS]; */
 
 	bool rataliveX[NUM_RATS_X];  
 	bool rataliveY[NUM_RATS_Y]; 
