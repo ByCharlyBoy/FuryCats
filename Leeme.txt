@@ -1,0 +1,33 @@
+FURY CATS:
+
+Instrucciones para iniciar el juego:
+1.-Abrir la carpeta RotografosEngine-RotoBoy
+2.-Hacer doble click en TestBed.sln
+3.- Compilar el codigo
+
+
+
+Controles:
+
+Iniciar Juego        SPACEBAR
+Reiniciar Partida    G
+Lanzar Al Gato       Q W E A D Z X C
+
+
+
+Instrucciones:
+
+Tienes que lanzar el gato para atrapar las ratas, sin que la podadora te arolle o los arrastrahojas te golpeen
+
+Las ratas te otorgan 10 puntos
+
+Las podadoras te restan 1 vida y te quitan 5 puntos
+Los arrastrahojas te restan 1 vida y te quitan 3 puntos
+
+¿Podrás obtener el puntaje máximpo antes de perder tus 3 vidas?
+
+
+
+Soluciones de Bugs:
+
+-si el gato no aparece en pantalla al iniciar el juego; presionar la letra "G" y despues volver a iniciar la partida.
