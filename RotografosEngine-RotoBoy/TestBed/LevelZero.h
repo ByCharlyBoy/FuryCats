@@ -18,7 +18,7 @@ public:
 	void Score(); 
 	void move_Player(); 
 	void move_ObstacleX(); 
-	void move_ObstacleY(); 
+	void move_Arras(); 
 	void move_RatX();
 	void move_RatY(); 
 	int AddPoints(int player_points, int ia_points); 
@@ -30,7 +30,7 @@ public:
 		NUM_RATS_X = 6,
 		NUM_RATS_Y = 4,
 		NUM_PODS = 2,
-		NUM_ARRAS = 1
+		NUM_ARRAS = 2
 	}; 
 	
 
@@ -84,6 +84,8 @@ public:
 
 	bool rataliveX[NUM_RATS_X];  
 	bool rataliveY[NUM_RATS_Y]; 
+
+	bool arrasalive[NUM_ARRAS]; 
 
 	bool catalive = true; 
 	

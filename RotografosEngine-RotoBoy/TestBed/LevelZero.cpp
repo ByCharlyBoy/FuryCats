@@ -7,16 +7,16 @@
 LevelZero::LevelZero() 
 {
 	jardin = new GameObject("FuryCats/Escena2.png"); 
-	cat = new GameObject("FuryCats/Cat_rainbow.png");
+	cat = new GameObject("FuryCats/Cat2.png");
 
 	for (int i = 0; i < NUM_RATS_X; i++){
-		ratX[i] = new GameObject("FuryCats/Rat.png"); //instacia la rat 
+		ratX[i] = new GameObject("FuryCats/Rat2.png"); //instacia la rat 
 		rataliveX[i] = true; 
 		ratmovementX[i] = ratspeedx; 
 		
 	}
 	for (int i = 0; i < NUM_RATS_Y; i++) {
-		ratY[i] = new GameObject("FuryCats/Rat.png");
+		ratY[i] = new GameObject("FuryCats/Rat2.png");
 		rataliveY[i] = true;
 		ratmovementY[i] = ratspeedy;
 
@@ -26,11 +26,12 @@ LevelZero::LevelZero()
 		podadora[i] = new GameObject("FuryCats/Podadora2.png");
 		podmovementX[i] = podspeedx; 
 	}
-	//for (int i = 0; i < NUM_ARRAS; i++)
-	//{
-	//	arrastahojas[i] = new GameObject("FuryCats/Podadora.png"); 
-	//	//arrastramovY[i] = arrastraspeedy; 
-	//}
+	for (int i = 0; i < NUM_ARRAS; i++)
+	{
+		arrastahojas[i] = new GameObject("FuryCats/Arras.png"); 
+		arrasalive[i] = true;
+		//arrastramovY[i] = arrastraspeedy; 
+	}
 	prequelScene = new GameObject("FuryCats/HD_FuryCats_CoverPurple.png"); 
 
 }
@@ -75,26 +76,19 @@ void LevelZero::Start()
 			break;
 		case 1:
 			//podadora en la parte de abajo
-			setPosrat(podadora[i], 2, 1, App::GetHeight() / 2, 1280, App::GetHeight() - 134);
+			setPosrat(podadora[i], 2, 1, App::GetHeight() / 2, 1280, App::GetHeight() - 200);
 			break;
 		}
 		//podadora[i]->SetPos(650, App::GetHeight() - 600);
 	}
 	//------------------------------------------
-	//for (int i = 0; i < NUM_ARRAS; i++)
-	//{
-	//	arrastahojas[i]->CreateCollider(Square); 
-	//	switch (i) {
-	//	case 0:
-	//		//podadora en la parte de arriba
-	//		arrastahojas[i]->SetPos(0, App::GetHeight() - 100);
-	//		break;
-	//	case 1:
-	//		//podadora en la parte de abajo
-	//		arrastahojas[i]->SetPos(0, App::GetHeight() - 200);
-	//		break;
-	//	}
-	//}
+	for (int i = 0; i < NUM_ARRAS; i++) //****
+	{
+		arrastahojas[i]->CreateCollider(Square); 
+		//SetPos(0, App::GetHeight() - 100);
+		setPosrat(arrastahojas[i], 0, 0, 0, App::GetWidth() - 100, App::GetHeight() - 50);
+	
+	}
 	
 
 	inGame = true; 
@@ -138,16 +132,17 @@ void LevelZero::Update(float deltaTime) //set pos //moviemnto del personaje desd
 		}
 	}
 	//-------------------------------------------
-	for (int i = 0; i < NUM_RATS_Y; i++) {
+	for (int i = 0; i < NUM_PODS; i++) {
 		
 		if (podadora[i] != nullptr)
 			podadora[i]->Update();
 	}
 	
-	/*for (int i = 0; i < NUM_ARRAS; i++) {
+	for (int i = 0; i < NUM_ARRAS; i++) {
 		if (arrastahojas[i] != nullptr)
 			arrastahojas[i]->Update(); 
-	}*/
+			 
+	}
 
 	//podadora en X y parte de su collision
 	if (catalive)
@@ -253,27 +248,24 @@ void LevelZero::Player_Collide() //collision del jugador
 
 		}
 	}
-	/*for (int i = 0; i < NUM_ARRAS; i++)
+	for (int i = 0; i < NUM_ARRAS; i++)
 	{
 		if (catalive && arrastahojas[i]->GetCollider()->IsCollinding(cat->GetCollider()))
 		{
-			catalive = false;
 			score -= 5;
 			std::cout << "Se restaron 3 puntos" << std::endl;
 			std::cout << score << std::endl;
-
-			life -= 1;
-			std::cout << "Se muere" << std::endl;
-			if (catalive == false && life >= 0)
+			catalive = false;
+			life--;
+			if (catalive == false && life >= 1)
 			{
-
-				cat->SetPos(0, App::GetHeight() - 300);
+				cat->SetPos(0, App::GetHeight() - 100);
 				catalive = true;
-				std::cout << "Revivido" << std::endl;
-
 			}
 		}
-	}*/
+
+
+	}
 
 }
 
@@ -401,7 +393,7 @@ void LevelZero::move_Player() //mov del jugador
 
 void LevelZero::move_ObstacleX() //mov del obstaculo
 {
-	for (int i = 0; i < NUM_RATS_Y; i++) {
+	for (int i = 0; i < NUM_PODS; i++) {
 		if (podadora[i] == nullptr)
 			continue; 
 		if (podadora[i]->GetPos()->x + podadora[i]->GetPos()->w >= App::GetWidth())
@@ -424,22 +416,20 @@ void LevelZero::move_ObstacleX() //mov del obstaculo
 			podadora[i]->SetY(0);
 		podadora[i]->MoveX(podmovementX[i]);
 	}
-
-	//for (int i = 0; i < NUM_ARRAS; i++)
-	//{
-	//	/*if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->h >= App::GetHeight())
-	//		arrastahojas[i]->SetY(App::GetHeight() - arrastahojas[i]->GetPos()->h - 10);
-	//	if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->w >= App::GetWidth())
-	//		arrastahojas[i]->SetX(App::GetWidth() - arrastahojas[i]->GetPos()->w);
-	//	if (arrastahojas[i]->GetPos()->y <= 0)
-	//		arrastahojas[i]->SetY(0);*/
-	//}
 	
 }
 
-void LevelZero::move_ObstacleY() //en caso de necsitarlo (no lo creo)
+void LevelZero::move_Arras() 
 {
-
+	/*for (int i = 0; i < NUM_ARRAS; i++)
+	{
+		if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->h >= App::GetHeight())
+			arrastahojas[i]->SetY(App::GetHeight() - arrastahojas[i]->GetPos()->h - 10);
+		if (arrastahojas[i]->GetPos()->y + arrastahojas[i]->GetPos()->w >= App::GetWidth())
+			arrastahojas[i]->SetX(App::GetWidth() - arrastahojas[i]->GetPos()->w);
+		if (arrastahojas[i]->GetPos()->y <= 0)
+			arrastahojas[i]->SetY(0);
+	}*/
 }
 
 
@@ -451,7 +441,7 @@ void LevelZero::move_RatX()
 		{
 			ratmovementX[i] = -ratspeedx; //limite derecha 
 		}
-		else if (ratX[i]->GetPos()->x - ratX[i]->GetPos()->w <= 0)
+		else if (ratX[i]->GetPos()->x <= 0)
 		{
 			ratmovementX[i] = ratspeedx; //limite izquierda
 		}
@@ -526,8 +516,5 @@ void LevelZero::OnEnd()
 
 //diseno del nivel, donde vamos a poner cada cosa
 
-
-// el gameobject, deberia de tener su propio movimiento, *******
-//para que sea independiente cda uno de los sprites (ratas)
 
 
